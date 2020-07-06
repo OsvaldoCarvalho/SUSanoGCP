@@ -1,0 +1,8 @@
+Dados/
+
+*.pkl
+
+# Python pycache:
+__pycache__/
+
+desktop.ini
