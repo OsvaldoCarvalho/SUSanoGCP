@@ -1,0 +1,19 @@
+runtime: python37
+env: flex
+
+instance_class: F4_1G
+
+resources:
+  cpu: 1
+  memory_gb: 8
+  disk_size_gb: 10
+                             
+entrypoint: gunicorn -b :$PORT main:app
+
+handlers:
+  -url: /assets
+  static_dir: assets
+  
+# https://cloud.google.com/appengine/docs/standard/python/config/appref
+env_variables:
+  PKL_BUCKET:  'susano-dash.appspot.com'

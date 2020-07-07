@@ -9,14 +9,51 @@ import pandas as pd
 import numpy as np
 import os
 
+from google.cloud import storage
+
 import dash_html_components as html
 
 from funcoes_de_apoio import *
 
-data_files_path = os.path.join('./Dados')
+def download_blob(bucket_name, source_blob_name, destination_file_name):
+    """Downloads a blob from the bucket."""
+    # https://cloud.google.com/storage/docs/downloading-objects#code-samples
+    # bucket_name = "your-bucket-name"
+    # source_blob_name = "storage-object-name"
+    # destination_file_name = "local/path/to/file"
+
+    storage_client = storage.Client()
+
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(source_blob_name)
+    blob.download_to_filename(destination_file_name)
+
+    print(
+        "Blob {} downloaded to {}.".format(
+            source_blob_name, destination_file_name
+        )
+    )
+
+data_files_path = os.path.join('.','Dados')
+pkl_source = os.environ.get('PKL_BUCKET')
+
+#pkl_source = 'susano-dash.appspot.com'
+# Mudar assim que aprender a usar variáveis de ambiente no windows
+print(f'pkl_source = {pkl_source}')
+
+key_path = 'C:\\Users\\Osvaldo Carvalho\\Google Drive\\Colab Notebooks\\dash\\SUSano Dash\\ChaveDeServico\\susano-dash-cc5bf43cdacc.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = key_path
+
 
 def read_pkl(pkl_file):
-    return pd.read_pickle(os.path.join(data_files_path, pkl_file))
+    path = os.path.join(data_files_path, pkl_file)
+    if pkl_source is None:
+        df = pd.read_pickle(path)
+    else:
+        download_blob(pkl_source, 'Dados/' + pkl_file, path)
+        df = pd.read_pickle(path)
+#        os.remove(path)
+    return df
 
 class dados_globais:
     

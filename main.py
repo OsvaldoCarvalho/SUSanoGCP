@@ -118,4 +118,4 @@ def switch_tab(at, last_tabs):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8057)
+    app.run_server(debug=False, port=8056)
