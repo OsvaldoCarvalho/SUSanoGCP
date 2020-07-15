@@ -41,7 +41,7 @@ def gera_gr_freq_custos_alvos(dg, ds):
             name="Alvos Hospitalares",
             hovertemplate = 
                              '<b>%{text}</b><br>' +
-                             '<b>Atendimentos</b>: %{x:d}<br>' +
+                             '<b>Atendimentos</b>: %{x:,d}<br>' +
                              '<b>Valor médio</b>: R$%{y:,.2f}',
                              text = df_alvos_H['hover_text'].tolist(),
                              mode='markers',
@@ -59,7 +59,7 @@ def gera_gr_freq_custos_alvos(dg, ds):
             name="Alvos Ambulatoriais",
             hovertemplate = 
                              '<b>%{text}</b><br>' +
-                             '<b>Atendimentos</b>: %{x:d}<br>' +
+                             '<b>Atendimentos</b>: %{x:,d}<br>' +
                              '<b>Valor médio</b>: R$%{y:,.2f}',
                              text = df_alvos_A['hover_text'].tolist(),
                              mode='markers',
@@ -77,7 +77,7 @@ def gera_gr_freq_custos_alvos(dg, ds):
             name=wrap(ds.Cod_Alvo_em_foco + ' ' + ds.A_em_foco, 35),
             hovertemplate = 
                              '<b>%{text}</b><br>' +
-                             '<b>Atendimentos</b>: %{x:d}<br>' +
+                             '<b>Atendimentos</b>: %{x:,d}<br>' +
                              '<b>Valor médio</b>: R$%{y:,.2f}',
                              text = df_alvo_em_foco['hover_text'].tolist(),
                              mode='markers',

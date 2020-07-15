@@ -35,24 +35,26 @@ def download_blob(bucket_name, source_blob_name, destination_file_name):
     )
 
 data_files_path = os.path.join('.','Dados')
+tmp_path = os.path.join('/tmp')
 pkl_source = os.environ.get('PKL_BUCKET')
 
-#pkl_source = 'susano-dash.appspot.com'
+# pkl_source = 'LOCAL'
 # Mudar assim que aprender a usar variáveis de ambiente no windows
 print(f'pkl_source = {pkl_source}')
 
-key_path = 'C:\\Users\\Osvaldo Carvalho\\Google Drive\\Colab Notebooks\\dash\\SUSano Dash\\ChaveDeServico\\susano-dash-cc5bf43cdacc.json'
+key_path = os.path.join('.', 'susano-dash-1b4c16af57ff.json')
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = key_path
 
 
 def read_pkl(pkl_file):
-    path = os.path.join(data_files_path, pkl_file)
-    if pkl_source is None:
-        df = pd.read_pickle(path)
+    local_path = os.path.join(data_files_path, pkl_file)
+    gc_path = os.path.join(tmp_path, pkl_file)
+    if pkl_source == 'LOCAL':
+        df = pd.read_pickle(local_path)
     else:
-        download_blob(pkl_source, 'Dados/' + pkl_file, path)
-        df = pd.read_pickle(path)
-#        os.remove(path)
+        download_blob(pkl_source, 'Dados/' + pkl_file, gc_path)
+        df = pd.read_pickle(gc_path)
+        os.remove(gc_path)
     return df
 
 class dados_globais:
@@ -218,6 +220,10 @@ class dados_sessão:
         
         self.df_EMA_mês_f_EMA = self.df_EMA_mês_f_MA[self.df_EMA_mês_f_MA['CNES'] == CNES_em_foco]
         self.qtds_mensais_EMA = qtds_mensais(self.df_EMA_mês_f_EMA, 'Qtd_EMA_mês')
+        self.valor_anual_EMA = self.df_EMA_mês_f_EMA['Valor_EMA_mês'].sum()
+        self.excesso_anual_EMA = self.df_EMA_mês_f_EMA['Excesso_EMA_mês'].sum()
+        self.qtd_anual_EMA = self.df_EMA_mês_f_EMA['Qtd_EMA_mês'].sum()
+        self.valor_médio_anual_EMA = self.valor_anual_EMA / self.qtd_anual_EMA
         
         
         self.df_EMA_f_A = dg.df_EMA[dg.df_EMA['Cod_Alvo'] == Cod_Alvo_em_foco]
@@ -248,6 +254,7 @@ class dados_sessão:
                                     axis=1, inplace=True)
         self.df_M_Alvo_em_foco = self.df_M_Alvo_em_foco.astype({"Qtd_EMA": int}) # Não sei por qual motivo isso se tornou necessário
         self.df_M_Alvo_em_foco['Taxa_por_hab_SUS'] = self.df_M_Alvo_em_foco['Qtd_EMA']/self.df_M_Alvo_em_foco['POP_MUN_SUS']
+        self.df_M_Alvo_em_foco.sort_values(by='Taxa_por_hab_SUS', inplace=True)
         self.IBGE_to_Qtd_Alvo_em_foco = self.df_M_Alvo_em_foco.set_index(['IBGE6_MUN'])['Qtd_EMA']
         self.IBGE_to_Valor_Alvo_em_foco = self.df_M_Alvo_em_foco.set_index(['IBGE6_MUN'])['Valor_EMA']
         
@@ -277,6 +284,7 @@ class dados_sessão:
         self.df_atendimento_AM['Perc'] = [f_perc((q / self.qtd_anual_M_Res_em_foco) * 100) for q in self.df_atendimento_AM['Qtd_EMA']]
         self.df_atendimento_AM = self.df_atendimento_AM[['CNES', 'Estabelecimento', 'Qtd_EMA', 'Perc']]
         self.df_atendimento_AM.columns = ['CNES', 'Estabelecimento', 'Qtd', 'Perc']
+        
         
         self.taxa_anual_limiar = limiares_mensais.sum()
         

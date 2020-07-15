@@ -7,13 +7,20 @@ def coloca_em_template(template_str, lista_substituições):
     return template_str
 
 def f_float(x):
-    return locale.format_string('%13.2f', x, grouping=True)
+    s = f'{x:,.2f}'
+    s = s.replace('.', '*')
+    s = s.replace(',', '.')
+    s = s.replace('*', ',')
+    return s
 
 def f_int(i):
-    return locale.format_string('%d', i, grouping=True)
+    s = f'{int(i):,d}'
+    s = s.replace(',', '.')
+    return s
 
 def f_perc(p):
-    return locale.format_string('%6.2f%%', p)
+    s = f_float(p) + '%'
+    return s
 
 import textwrap
 def wrap(texto, largura):

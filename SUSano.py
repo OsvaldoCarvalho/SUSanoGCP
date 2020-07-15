@@ -50,11 +50,23 @@ texto_créditos = html.Div([
         html.A("InfoSAS", href="http://revista.tcu.gov.br/ojs/index.php/RTCU/article/view/1378"),
         ", um trabalho conjunto de professores e técnicos da UFMG, "
         "e de sanitaristas do Ministério da Saúde e da Prefeitura de "
-        "Belo Horizonte. "
+        "Belo Horizonte. ",
+        html.Br(),
+        "Douglas Mesquita (douglasrm.azevedo@gmail.com) desenvolveu a parte "
+        "mais importante: um módulo em R que, a partir dos dados "
+        "disponibilizados pelo DATASUS, ANS e IBGE, faz as estimativas "
+        "dos parâmetros de cada distribuição log-normal, e produz os dados "
+        "aqui utilizados.",
+        html.Br(),
+        "O aplicativo Python/Dash foi desenvolvido por Osvaldo Carvalho "
+        "(osvaldo@dcc.ufmg.br, osvaldosfcarvalho@gmail.com), "
+        "professor associado voluntário do Departamento de Ciência da Computação "
+        "da UFMG."
         ])
 
 texto_contato = html.Div([
-        "Contato: ",
+        "Por favor, envie críticas, sugestões e erros que eventualmente perceber para",
+        html.Br(),
         html.A("osvaldosfcarvalho@gmail.com",
                href="mailto:osvaldosfcarvalho@gmail.com",
                )

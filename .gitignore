@@ -6,3 +6,7 @@ Dados/
 __pycache__/
 
 desktop.ini
+
+*.json
+
+.vs/

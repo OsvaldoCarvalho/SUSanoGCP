@@ -11,7 +11,7 @@ help_gr_evolução_mensal = html.Div([
         "prestados a residentes do município escolhido. ",
         "É também mostrada a participação do estabelecimento escolhido nesse atendimento. ",
         html.Br(),
-        "A linha ", html.Em("Taxa da capital x população SUS..."),
+        "A linha ", html.Em("Taxa da capital x população SUS de ..."),
         " é construída multiplicando-se a taxa de atendimentos por habitante-SUS da ",
         "capital pela população SUS do município escolhido. ",
         "Em outras palavras, essa linha corresponde ao número esperado de atendimentos ",
@@ -20,7 +20,11 @@ help_gr_evolução_mensal = html.Div([
         html.Br(),
         "A linha ", html.Em("Limiar log-normal "),
         "se refere ao número a partir do qual consideramos ter havido atendimentos em excesso. ",
-        "Você pode ignorar essa linha, mas se tiver interesse, veja a explicação no manual do sistema.",
+        "Você pode ignorar essa linha, mas se tiver interesse, veja a explicação na aba ",
+        html.Em("SUSano"),
+        ", seção ",
+        html.Em("Metodologia"),
+        ".",
         html.Ul([html.Li(["Experimente clicar sobre as legendas..."]),
                  html.Li(["Experimente também os ícones no canto superior direito, que dão acesso a diversas funcionalidades interessantes."])])
         ])

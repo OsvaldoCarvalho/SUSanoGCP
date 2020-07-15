@@ -15,7 +15,7 @@ from dash_app import app
 
 from funcoes_de_apoio import *
 
-EMPTY_FIGURE = go.Figure(data=[], layout=go.Layout(title='Sem dados para exibir. Por favor, use a aba "Escolha EMA" para selecionar uma tripla (Estabelecimento, Município, Alvo)'))
+EMPTY_FIGURE = go.Figure(data=[], layout=go.Layout(title='Sem dados para exibir. Por favor, use a aba "Escolha" para selecionar uma tripla (Estabelecimento, Município, Alvo)'))
 
 seleção = dcc.Dropdown(
                        id = "gráficos-o-que-mostrar",

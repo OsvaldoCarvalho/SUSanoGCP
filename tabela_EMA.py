@@ -274,9 +274,9 @@ def click_botão_análise(n, escolha_EMA):
                       IBGE_Res_em_foco, 
                       Cod_Alvo_em_foco)
     
-    gr_evolução = gera_gr_evolução_mensal(dg, ds)
-    histograma_taxas = gera_histograma_taxas(dg, ds)
-    gr_pop_atend = gera_gr_pop_atendimentos(dg, ds)
+#    gr_evolução = gera_gr_evolução_mensal(dg, ds)
+#    histograma_taxas = gera_histograma_taxas(dg, ds)
+#    gr_pop_atend = gera_gr_pop_atendimentos(dg, ds)
     relatório = gera_relatório_EMA(dg, ds)
     gráficos_EMA = gera_gráficos_EMA(dg, ds)
     
@@ -285,12 +285,12 @@ def click_botão_análise(n, escolha_EMA):
     
     dados_análise = {'when': when,
                      'Relatório_EMA': relatório,
-                     'Gráfico_Evolução_Mensal': gr_evolução,
-                     'Histograma_Taxas': histograma_taxas,
-                     'Gráfico_Pop_Atend': gr_pop_atend,
+#                     'Gráfico_Evolução_Mensal': gr_evolução,
+#                     'Histograma_Taxas': histograma_taxas,
+#                     'Gráfico_Pop_Atend': gr_pop_atend,
                      'Gráficos_EMA': gráficos_EMA}
     
-    saída = f"Tabelas e gráficos prontos."
+    saída = f"Tabelas e gráficos prontos. Clique nas abas acima para vê-los."
     if n is None:
         return "Not clicked.", dados_análise
     else:

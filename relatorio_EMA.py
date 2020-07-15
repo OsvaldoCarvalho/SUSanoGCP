@@ -7,7 +7,7 @@ from dash_app import app
 
 from funcoes_de_apoio import *
 
-EMPTY_REPORT = html.P('Sem dados para exibir. Por favor, use a aba "Escolha EMA" para selecionar uma tripla (Estabelecimento, Município, Alvo)')
+EMPTY_REPORT = html.P('Sem dados para exibir. Por favor, use a aba "Escolha" para selecionar uma tripla (Estabelecimento, Município, Alvo)')
 
 def descrição_alvo(dg, ds):
     table_header = [
@@ -19,19 +19,29 @@ def descrição_alvo(dg, ds):
     rows.append(html.Tr([html.Td("Grupo"), html.Td(ds.grupo_A_em_foco)]))
     rows.append(html.Tr([html.Td("Subgrupo"), html.Td(ds.subgrupo_A_em_foco)]))
     rows.append(html.Tr([html.Td("Estabelecimentos com produção"),
-                         html.Td(f_int(ds.n_E_com_produção_no_alvo))]))
+                         html.Td(f_int(ds.n_E_com_produção_no_alvo),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td("Municípios com produção"),
-                         html.Td(f_int(ds.n_municípios_com_produção_no_alvo))]))
+                         html.Td(f_int(ds.n_municípios_com_produção_no_alvo),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td("Estados com produção"),
-                         html.Td(ds.n_UFs_com_produção_no_alvo)]))
+                         html.Td(ds.n_UFs_com_produção_no_alvo,
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td(f"Atendimentos em {dg.ano_em_foco} (Brasil)"),
-                         html.Td(f_int(ds.qtd_anual_A_em_foco))]))
+                         html.Td(f_int(ds.qtd_anual_A_em_foco),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td(f"Valor total em {dg.ano_em_foco}"),
-                         html.Td("R$ " + f_float(ds.valor_anual_A_em_foco))]))
+                         html.Td("R$ " + f_float(ds.valor_anual_A_em_foco),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td(f"Valor médio (Brasil)"),
-                         html.Td("R$ " + f_float(ds.valor_medio_A_Br))]))
+                         html.Td("R$ " + f_float(ds.valor_medio_A_Br),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td(f"Valor médio em {ds.M_Res_em_foco}"),
-                         html.Td("R$ " + f_float(ds.valor_médio_M_Res))]))
+                         html.Td("R$ " + f_float(ds.valor_médio_M_Res),
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f'Valor médio em {ds.M_Res_em_foco} por {ds.E_em_foco}'),
+                         html.Td("R$ " + f_float(ds.valor_médio_anual_EMA),
+                                 style={'textAlign': 'right'})]))
     table_body = [html.Tbody(rows)]
     return dbc.Col(html.Div([dbc.Table(table_header + table_body, size='sm')]),
                    width={"size": 8,
@@ -39,7 +49,11 @@ def descrição_alvo(dg, ds):
                    )
     
 help_relatório_alvo = html.Div([
-        "Dados do alvo escolhido."
+        "Dados do alvo escolhido.",
+        html.Em("Excesso"), " é o produto do número de atendimentos que nosso ",
+        "tratamento estatístico considerou excessivos, pelo valor médio ",
+        "do atendimento. Para mais detalhes, veja a seção ",
+        html.Em("Metodologia"), " na aba ", html.Em("SUSano.")
         ])
 
 def descrição_estabelecimento(dg, ds):
@@ -50,18 +64,33 @@ def descrição_estabelecimento(dg, ds):
     
     rows = []
     rows.append(html.Tr([html.Td("Localização"), html.Td(ds.M_E_em_foco + ', ' + ds.UF_E_em_foco)]))
-    rows.append(html.Tr([html.Td(f"Atendimentos em {dg.ano_em_foco} (todos os alvos)"),
-                         html.Td(f_int(ds.qtd_total_E_em_foco))]))
-    rows.append(html.Tr([html.Td(f"Valor em {dg.ano_em_foco} (todos os alvos)"),
-                         html.Td("R$ " + f_float(ds.valor_total_E_em_foco))]))
-    rows.append(html.Tr([html.Td(f"Excesso em {dg.ano_em_foco} (todos os alvos)"),
-                         html.Td("R$ " + f_float(ds.excesso_total_E_em_foco))]))
+    rows.append(html.Tr([html.Td(f"Atendimentos em {dg.ano_em_foco} (todos os alvos e municípios)"),
+                         html.Td(f_int(ds.qtd_total_E_em_foco),
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f"Valor em {dg.ano_em_foco} (todos os alvos e municípios)"),
+                         html.Td("R$ " + f_float(ds.valor_total_E_em_foco),
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f"Excesso em {dg.ano_em_foco} (todos os alvos e municípios)"),
+                         html.Td("R$ " + f_float(ds.excesso_total_E_em_foco),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td(f"Atendimentos no alvo {ds.Cod_Alvo_em_foco} (todos os municípios)"),
-                         html.Td(f_int(ds.qtd_total_AE))]))
+                         html.Td(f_int(ds.qtd_total_AE),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td(f"Municípios atendidos no alvo {ds.Cod_Alvo_em_foco}"),
-                         html.Td(f_int(ds.n_municípios_atendidos_AE))]))
+                         html.Td(f_int(ds.n_municípios_atendidos_AE),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td(f"UFs atendidas no alvo {ds.Cod_Alvo_em_foco}"),
-                         html.Td(ds.n_UFs_atendidas_AE)]))
+                         html.Td(ds.n_UFs_atendidas_AE,
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f'Atendimentos em {ds.Cod_Alvo_em_foco} para residentes em {ds.M_Res_em_foco}'),
+                         html.Td(ds.qtd_anual_EMA,
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f'Valor dos atendimentos em {ds.Cod_Alvo_em_foco} para residentes em {ds.M_Res_em_foco}'),
+                         html.Td("R$ " + f_float(ds.valor_anual_EMA),
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f'Excesso nos atendimentos em {ds.Cod_Alvo_em_foco} para residentes em {ds.M_Res_em_foco}'),
+                         html.Td("R$ " + f_float(ds.excesso_anual_EMA),
+                                 style={'textAlign': 'right'})]))
     
     table_body = [html.Tbody(rows)]
     return dbc.Col(html.Div([dbc.Table(table_header + table_body, size='sm')]),
@@ -76,25 +105,47 @@ def descrição_município(ds):
     rows = []
     rows.append(html.Tr([html.Td("Município"), html.Td(ds.M_Res_em_foco)]))
     rows.append(html.Tr([html.Td("UF"), html.Td(ds.UF_M_Res_em_foco)]))
-    rows.append(html.Tr([html.Td("População"), html.Td(f_int(ds.pop_M_Res_em_foco))]))
-    rows.append(html.Tr([html.Td("População SUS"), html.Td(f_int(ds.pop_SUS_M_Res_em_foco))]))
+    rows.append(html.Tr([html.Td("População"), html.Td(f_int(ds.pop_M_Res_em_foco),
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td("População SUS"), html.Td(f_int(ds.pop_SUS_M_Res_em_foco),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td("Atendimentos (todos os alvos)"), 
-                         html.Td(f_int(ds.qtd_anual_M_em_foco))]))
+                         html.Td(f_int(ds.qtd_anual_M_em_foco),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td("Valor (todos os alvos)"),
-                         html.Td("R$ " + f_float(ds.valor_total_M_em_foco))]))
+                         html.Td("R$ " + f_float(ds.valor_total_M_em_foco),
+                                 style={'textAlign': 'right'})]))
     rows.append(html.Tr([html.Td("Excesso (todos os alvos)"),
-                         html.Td("R$ " + f_float(ds.excesso_total_M_em_foco))]))
+                         html.Td("R$ " + f_float(ds.excesso_total_M_em_foco),
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f'Atendimentos em {ds.Cod_Alvo_em_foco} por {ds.E_em_foco}'),
+                         html.Td(ds.qtd_anual_EMA,
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f'Valor dos atendimentos em {ds.Cod_Alvo_em_foco} por {ds.E_em_foco}'),
+                         html.Td("R$ " + f_float(ds.valor_anual_EMA),
+                                 style={'textAlign': 'right'})]))
+    rows.append(html.Tr([html.Td(f'Excesso nos atendimentos em {ds.Cod_Alvo_em_foco} por {ds.E_em_foco}'),
+                         html.Td("R$ " + f_float(ds.excesso_anual_EMA),
+                                 style={'textAlign': 'right'})]))    
     table_body = [html.Tbody(rows)]
     return dbc.Col(html.Div([dbc.Table(table_header + table_body, size='sm')]),
                    width={"size": 6, "offset": 3}
                    )
     
 help_relatório_estabelecimento = html.Div([
-        "Dados do estabelecimento escolhido"
+        "Dados do estabelecimento escolhido.",
+        html.Em("Excesso"), " é o produto do número de atendimentos que nosso ",
+        "tratamento estatístico considerou excessivos, pelo valor médio ",
+        "do atendimento. Para mais detalhes, veja a seção ",
+        html.Em("Metodologia"), " na aba SUSano."
         ])
 
 help_relatório_município = html.Div([
-        "Dados do município de residência escolhido"
+        "Dados do município de residência escolhido",
+        html.Em("Excesso"), " é o produto do número de atendimentos que nosso ",
+        "tratamento estatístico considerou excessivos, pelo valor médio ",
+        "do atendimento. Para mais detalhes, veja a seção ",
+        html.Em("Metodologia"), " na aba SUSano."
         ])
 
 def descrição_distribuição(dg, ds):
@@ -113,42 +164,65 @@ help_relatório_distribuição = html.Div([
         
 def descrição_comparação_de_taxas(dg, ds):
     table_header = [
-            html.Thead(html.Tr([html.Th("Local"), html.Th("População"), html.Th("Pop SUS"), 
-                                html.Th("Qtd"), html.Th(f"Atendimentos por {f_int(ds.denominador_populacional)} hab-SUS")]))
+            html.Thead(html.Tr([html.Th("Local"), html.Th("População",
+                                 style={'textAlign': 'right'}), 
+                                html.Th("Pop SUS",
+                                 style={'textAlign': 'right'}), 
+                                html.Th("Qtd",
+                                 style={'textAlign': 'right'}), 
+                                html.Th(f"Qtd / {f_int(ds.denominador_populacional)} hab-SUS",
+                                 style={'textAlign': 'right'})
+                                ]))
         ]
             
     rows = [] 
     
     taxa_normalizada_M_Res = ds.taxa_anual_M_Res * ds.denominador_populacional
     rows.append(html.Tr([html.Td(ds.M_Res_em_foco), 
-                         html.Td(f_int(ds.pop_M_Res_em_foco)),
-                         html.Td(f_int(ds.pop_SUS_M_Res_em_foco)),
-                         html.Td(f_int(ds.qtd_anual_M_Res_em_foco)),
-                         html.Td(f_float(taxa_normalizada_M_Res))
+                         html.Td(f_int(ds.pop_M_Res_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_int(ds.pop_SUS_M_Res_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_int(ds.qtd_anual_M_Res_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_float(taxa_normalizada_M_Res),
+                                 style={'textAlign': 'right'})
                          ]))
     
     taxa_normalizada_Capital = ds.taxa_anual_Capital * ds.denominador_populacional        
     rows.append(html.Tr([html.Td(ds.Capital_em_foco), 
-                         html.Td(f_int(ds.pop_Capital_em_foco)),
-                         html.Td(f_int(ds.pop_SUS_Capital_em_foco)),
-                         html.Td(f_int(ds.qtd_anual_Capital_em_foco)),
-                         html.Td(f_float(taxa_normalizada_Capital))
+                         html.Td(f_int(ds.pop_Capital_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_int(ds.pop_SUS_Capital_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_int(ds.qtd_anual_Capital_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_float(taxa_normalizada_Capital),
+                                 style={'textAlign': 'right'})
                          ]))    
             
     taxa_normalizada_UF = ds.taxa_anual_UF * ds.denominador_populacional
     rows.append(html.Tr([html.Td(ds.nome_UF_Res_em_foco), 
-                         html.Td(f_int(ds.pop_UF_Res_em_foco)),
-                         html.Td(f_int(ds.pop_SUS_UF_Res_em_foco)),
-                         html.Td(f_int(ds.qtd_anual_UF)),
-                         html.Td(f_float(taxa_normalizada_UF))
+                         html.Td(f_int(ds.pop_UF_Res_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_int(ds.pop_SUS_UF_Res_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_int(ds.qtd_anual_UF),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_float(taxa_normalizada_UF),
+                                 style={'textAlign': 'right'})
                          ]))
             
     taxa_normalizada_Br = ds.taxa_anual_Br * ds.denominador_populacional
     rows.append(html.Tr([html.Td("Brasil"), 
-                         html.Td(f_int(dg.pop_Br)),
-                         html.Td(f_int(dg.pop_SUS_Br)),
-                         html.Td(f_int(ds.qtd_anual_A_em_foco)),
-                         html.Td(f_float(taxa_normalizada_Br))
+                         html.Td(f_int(dg.pop_Br),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_int(dg.pop_SUS_Br),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_int(ds.qtd_anual_A_em_foco),
+                                 style={'textAlign': 'right'}),
+                         html.Td(f_float(taxa_normalizada_Br),
+                                 style={'textAlign': 'right'})
                          ], className="tableTr"))    
             
     table_body = [html.Tbody(rows)]

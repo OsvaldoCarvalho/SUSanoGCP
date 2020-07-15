@@ -6,7 +6,7 @@ import dash_core_components as dcc
 
 from datetime import datetime
 
-from dash_app import app
+from dash_app import app, server
 from SUSano import SUSano
 from tabela_EMA import Tabela_EMA, tabela_EMA, spinner_análise
 from relatorio_EMA import Relatório_EMA, EMPTY_REPORT
@@ -46,9 +46,16 @@ store_div = html.Div([ dcc.Store(id='last-tab', data={'when':0,
                                                        'to_tab': 'init'}),
                         dcc.Store(id='store-análise', data={'when': 0,
                                                             'Relatório_EMA': {
-                                                                    "município": EMPTY_REPORT},
+                                                                    "município": EMPTY_REPORT,
+                                                                    "estabelecimento": EMPTY_REPORT,
+                                                                    "alvo": EMPTY_REPORT,
+                                                                    "distribuição": EMPTY_REPORT,
+                                                                    "comparação-de-taxas": EMPTY_REPORT},
                                                             'Gráficos_EMA': {
-                                                                    'evolução': EMPTY_FIGURE}
+                                                                    'evolução': EMPTY_FIGURE,
+                                                                    'histograma-taxas': EMPTY_FIGURE,
+                                                                    'pop-atendimentos': EMPTY_FIGURE,
+                                                                    'freq-custos-alvos': EMPTY_FIGURE}
                                                             }),
                         dcc.Store(id='store-update-tabela-EMA', data={'when': 0,
                                                                       'page_current': 0,
@@ -118,4 +125,4 @@ def switch_tab(at, last_tabs):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8056)
+    app.run_server(debug=False, port=8058)

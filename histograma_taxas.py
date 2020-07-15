@@ -21,7 +21,11 @@ help_histograma_taxas = html.Div([
         html.Br(),
         "A linha ", html.Em("Limiar log-normal "),
         "se refere à taxa a partir da qual consideramos ter havido atendimentos em excesso. ",
-        "Você pode ignorar essa linha, mas se tiver interesse, veja a explicação no manual do sistema."
+        "Você pode ignorar essa linha, mas se tiver interesse, veja a explicação na aba ",
+        html.Em("SUSano"),
+        ", seção ",
+        html.Em("Metodologia"),
+        "."
         ])
 
 def gera_histograma_taxas(dg, ds):

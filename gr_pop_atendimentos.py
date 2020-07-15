@@ -20,7 +20,11 @@ help_gr_pop_atendimentos = html.Div([
         html.Br(),
         "A linha ", html.Em("Limiar log-normal "),
         "se refere à taxa de atendimentos por habitante a partir da qual consideramos ter havido atendimentos em excesso. ",
-        "Você pode ignorar essa linha, mas se tiver interesse, veja a explicação no manual do sistema.",
+        "Você pode ignorar essa linha, mas se tiver interesse, veja a explicação na aba ",
+        html.Em("SUSano"),
+        ", seção ",
+        html.Em("Metodologia"),
+        ".",
         html.Ul([
                 html.Li(["Experimente clicar sobre as legendas..."]),
                 html.Li(["Experimente também os ícones no canto superior direito, que dão acesso a diversas funcionalidades interessantes."
